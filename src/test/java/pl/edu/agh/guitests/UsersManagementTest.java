@@ -1,5 +1,7 @@
 package pl.edu.agh.guitests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
@@ -24,26 +26,74 @@ public class UsersManagementTest {
 
 	@Test
 	public void testAddingNewUsers() throws Exception {
-		driver.get("http://localhost:8000/");
-		driver.findElement(By.linkText("Login")).click();
-		driver.findElement(By.id("id_login")).click();
-		driver.findElement(By.id("id_login")).clear();
-		driver.findElement(By.id("id_login")).sendKeys("jnowak");
-		driver.findElement(By.id("id_password")).clear();
-		driver.findElement(By.id("id_password")).sendKeys("jnowak1234");
-		driver.findElement(By.xpath("//input[@value='Login']")).click();
-
-		fail("Test not fully implemented!");
+		driver.get("http://127.0.0.1:8000/");
+	    driver.findElement(By.linkText("Login")).click();
+	    driver.findElement(By.id("id_login")).click();
+	    driver.findElement(By.id("id_login")).clear();
+	    driver.findElement(By.id("id_login")).sendKeys("akowalska");
+	    driver.findElement(By.id("id_password")).click();
+	    driver.findElement(By.id("id_password")).clear();
+	    driver.findElement(By.id("id_password")).sendKeys("akowalska1234");
+	    driver.findElement(By.xpath("//input[@value='Login']")).click();
+	    driver.findElement(By.id("id_create_button")).click();
+	    driver.findElement(By.id("id_first_name")).click();
+	    driver.findElement(By.id("id_first_name")).clear();
+	    driver.findElement(By.id("id_first_name")).sendKeys("Janusz");
+	    driver.findElement(By.id("id_last_name")).clear();
+	    driver.findElement(By.id("id_last_name")).sendKeys("Janusz");
+	    driver.findElement(By.id("id_login")).clear();
+	    driver.findElement(By.id("id_login")).sendKeys("Janusz");
+	    driver.findElement(By.id("id_password")).clear();
+	    driver.findElement(By.id("id_password")).sendKeys("Janusz1234");
+	    driver.findElement(By.id("id_email")).clear();
+	    driver.findElement(By.id("id_email")).sendKeys("janusz@gmail.com");
+	    driver.findElement(By.xpath("//input[@value='Save']")).click();
+	    driver.findElement(By.xpath("//button[@type='button']")).click();
+	    driver.findElement(By.linkText("Logout")).click();
+	    assertEquals("janusz@gmail.com", driver.findElement(By.xpath("//td[5]")).getText());
+	    assertEquals("Janusz", driver.findElement(By.xpath("//td[4]")).getText());
+	    assertEquals("Janusz", driver.findElement(By.xpath("//td[3]")).getText());
+	    assertEquals("Janusz", driver.findElement(By.xpath("//td[2]")).getText());
+	  
 	}
 
+	
+	
 	@Test
 	public void testEditUser() throws Exception {
-		fail("Not implemented yet!");
+		driver.get("http://127.0.0.1:8000/");
+	    driver.findElement(By.linkText("Login")).click();
+	    driver.findElement(By.id("id_login")).click();
+	    driver.findElement(By.id("id_login")).clear();
+	    driver.findElement(By.id("id_login")).sendKeys("akowalska");
+	    driver.findElement(By.id("id_password")).click();
+	    driver.findElement(By.id("id_password")).clear();
+	    driver.findElement(By.id("id_password")).sendKeys("akowalska1234");
+	    driver.findElement(By.xpath("//input[@value='Login']")).click();
+	    driver.findElement(By.id("id_edit_button_1")).click();
+	    driver.findElement(By.id("id_last_name")).click();
+	    driver.findElement(By.id("id_last_name")).clear();
+	    driver.findElement(By.id("id_last_name")).sendKeys("Nowak123");
+	    driver.findElement(By.xpath("//input[@value='Save']")).click();
+	    driver.findElement(By.xpath("//button[@type='button']")).click();
+	    driver.findElement(By.linkText("Logout")).click();
 	}
 
 	@Test
 	public void testRemoveUser() throws Exception {
-		fail("Not implemented yet!");
+		driver.get("http://127.0.0.1:8000/");
+	    driver.findElement(By.linkText("Login")).click();
+	    driver.findElement(By.id("id_login")).click();
+	    driver.findElement(By.id("id_login")).clear();
+	    driver.findElement(By.id("id_login")).sendKeys("akowalska");
+	    driver.findElement(By.id("id_password")).clear();
+	    driver.findElement(By.id("id_password")).sendKeys("akowalska1234");
+	    driver.findElement(By.xpath("//input[@value='Login']")).click();
+	    driver.findElement(By.id("id_delete_button_3")).click();
+	    driver.findElement(By.xpath("//button[@type='button']")).click();
+	    driver.findElement(By.linkText("Logout")).click();
+	    // Warning: assertTextNotPresent may require manual changes
+	    assertFalse(driver.findElement(By.cssSelector("BODY")).getText().matches("^[\\s\\S]*Janusz[\\s\\S]*$"));
 	}
 
 	@After
